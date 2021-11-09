@@ -4,7 +4,6 @@ const recupId = new URLSearchParams (requeteId); // extrait l'id dans la requete
     
 const id = recupId.get("id"); // méthode d'URLSearchParams qui renvoie la première valeur associée au paramètre search 
 
-
 fetch('http://localhost:3000/api/products/' + id) //requête de l'API avec spécification de l'id du produit s"lectionné à partir de la page d'accueil
     .then(reponse => reponse.json()) // promesse d'un objet js
     .then(fiche => { //contient la réponse à la promesse
@@ -27,9 +26,7 @@ fetch('http://localhost:3000/api/products/' + id) //requête de l'API avec spéc
                 document.getElementById('colors').appendChild(choix); //les balises options sont enfants de l'id colors
                 choix.value = color; // valeur de l'option
                 choix.textContent = color ; // texte affiché de l'option
-            }
-
-        
+            } 
     })
     
     .catch(function (err) {
@@ -37,43 +34,58 @@ fetch('http://localhost:3000/api/products/' + id) //requête de l'API avec spéc
         alert("impossible d'afficher les produits")
     });
 
-   
-let addCart = document.getElementById('addToCart'); // variable addCart raccourci pour le bouton "ajouter au panier"
+let addCart = document.getElementById("addToCart");
 
-let selectQuantity = document.getElementById('quantity'); // variable selectQuantity raccourci pour la quantité de produit
-
-let selectColor = document.querySelector('select'); // variable selectColor raccourci pour la couleur sélectionnée
-
-
-
-addCart.addEventListener('click', function(e) { //écoute bouton addToCart
-    let color = selectColor.value; // variable pour la couleur sélectionnée
-    let quantity = selectQuantity.value // variable pour la quantité sélectionnée
-
-    let product = {
+addCart.addEventListener(("click"), function (){
+    let color = document.querySelector("select").value // couleur sélectionnée par le client
+    let quantity = document.getElementById("quantity").value // quantité sélectionnée par le client
+    let price = document.getElementById("price").innerHTML + "€"
+    
+    product = {
         id,
-        quantity,
         color,
+        quantity,
         price
-    }; // création d'un objet product
+    };
 
-   let products = []; //création d'un tableau vide contenant les produits
-
-   let newProducts = []; // création d'un tableau vide pour les produits ajoutés
+    let doublon = false;
     
-    products.forEach(ajout => {
-            
-            if(product.id != ajout.id && product.color != ajout.color){ // si le produit ajouté a un id et une couleur différents du produit déjà présent dans le panier alors...
-                newProducts.push(ajout); //ajoute le produit dans le tableau newProducts
-            } 
-           
+    let produitStocke = JSON.parse(localStorage.getItem("product"));
+
+    if(produitStocke){ //si produitStocke contient quelque chose alors ajoute les produits
+        produitStocke = JSON.parse(localStorage.getItem("product"));
+    } else { // si produitStocke n'existe pas, alors créé un tableau vide pour qu'on puisse boucler avec forEach
+       let produitStocke = [];
+    }
+
+    if(color == "" && quantity === "0"){
+        window.alert("veuillez sélectionner une couleur et une quantité");
+    } else if(color == "" && quantity != "0"){
+        window.alert("veuillez sélectionner une couleur");
+    } else if(color !== "" && quantity === "0"){
+        window.alert("veuillez sélectionner une quantité");
+    } else if(color !== "" && quantity != "0"){
+        
+        produitStocke.forEach((element) => {
+            if(product.id === element.id && product.color === element.color){
+                element.quantity = product.quantity; // modifie la quantité de l'élément
+                doublon = true;
+                window.alert("quantité mise à jour")
+            }
         });
-    
-    newProducts.push(product); // ajoute un objet produit dans le tableau newProducts
 
-    let productLinea = JSON.stringify(newProducts);
-    localStorage.setItem("products", productLinea); // transformation de l'objet product en json
+        if(!doublon){
+            let newProduct = {
+                id,
+                color,
+                quantity,
+                price
+            };  
+            produitStocke.push(newProduct);
+            window.alert("nouveau produit ajouté au panier");
+        };
 
-    console.log(product);
+        localStorage.setItem("product", JSON.stringify(produitStocke));
+    };
 
 });
