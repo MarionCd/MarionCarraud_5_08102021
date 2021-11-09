@@ -33,10 +33,10 @@ fetch('http://localhost:3000/api/products/' + id) //requête de l'API avec spéc
         console.log("pb dans récupération API")
         alert("impossible d'afficher les produits")
     });
-
+localStorage.clear()
 let addCart = document.getElementById("addToCart");
 
-addCart.addEventListener(("click"), function (){
+addCart.addEventListener(("click"), function (){ // écoute du bouton addcart (pas besoin de réaction par défaut car bouton)
     let color = document.querySelector("select").value // couleur sélectionnée par le client
     let quantity = document.getElementById("quantity").value // quantité sélectionnée par le client
     let price = document.getElementById("price").innerHTML + "€"
@@ -46,31 +46,30 @@ addCart.addEventListener(("click"), function (){
         color,
         quantity,
         price
+    }; // enregistre les données dans objet product
+
+    let doublon = false; // considérons que ce n'est pas un doublon
+    let produitStocke
+
+    if(localStorage.getItem("product") === null){ 
+        produitStocke = [] // si localstorage est vide alors créé un tableau vide
+    } else {
+        produitStocke = JSON.parse(localStorage.getItem("product")); // sinon ajoute au localstorage
     };
 
-    let doublon = false;
-    
-    let produitStocke = JSON.parse(localStorage.getItem("product"));
-
-    if(produitStocke){ //si produitStocke contient quelque chose alors ajoute les produits
-        produitStocke = JSON.parse(localStorage.getItem("product"));
-    } else { // si produitStocke n'existe pas, alors créé un tableau vide pour qu'on puisse boucler avec forEach
-       let produitStocke = [];
-    }
-
     if(color == "" && quantity === "0"){
-        window.alert("veuillez sélectionner une couleur et une quantité");
+        window.alert("Veuillez sélectionner une couleur et une quantité");
     } else if(color == "" && quantity != "0"){
-        window.alert("veuillez sélectionner une couleur");
+        window.alert("Veuillez sélectionner une couleur");
     } else if(color !== "" && quantity === "0"){
-        window.alert("veuillez sélectionner une quantité");
+        window.alert("Veuillez sélectionner une quantité");
     } else if(color !== "" && quantity != "0"){
         
         produitStocke.forEach((element) => {
             if(product.id === element.id && product.color === element.color){
                 element.quantity = product.quantity; // modifie la quantité de l'élément
                 doublon = true;
-                window.alert("quantité mise à jour")
+                window.alert("Quantité mise à jour")
             }
         });
 
@@ -82,7 +81,7 @@ addCart.addEventListener(("click"), function (){
                 price
             };  
             produitStocke.push(newProduct);
-            window.alert("nouveau produit ajouté au panier");
+            window.alert("Nouveau produit ajouté au panier");
         };
 
         localStorage.setItem("product", JSON.stringify(produitStocke));
