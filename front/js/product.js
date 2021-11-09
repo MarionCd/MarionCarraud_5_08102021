@@ -33,7 +33,7 @@ fetch('http://localhost:3000/api/products/' + id) //requête de l'API avec spéc
         console.log("pb dans récupération API")
         alert("impossible d'afficher les produits")
     });
-localStorage.clear()
+
 let addCart = document.getElementById("addToCart");
 
 addCart.addEventListener(("click"), function (){ // écoute du bouton addcart (pas besoin de réaction par défaut car bouton)
