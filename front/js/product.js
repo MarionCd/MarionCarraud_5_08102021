@@ -39,13 +39,17 @@ let addCart = document.getElementById("addToCart");
 addCart.addEventListener(("click"), function (){ // écoute du bouton addcart (pas besoin de réaction par défaut car bouton)
     let color = document.querySelector("select").value // couleur sélectionnée par le client
     let quantity = document.getElementById("quantity").value // quantité sélectionnée par le client
-    let price = document.getElementById("price").innerHTML + "€"
+    let price = document.getElementById("price").innerHTML ;
+    let name = document.getElementById("title").textContent;
+    let imageURL = document.querySelectorAll('.item__img img')[0].src
     
     product = {
         id,
         color,
         quantity,
-        price
+        price,
+        name,
+        imageURL
     }; // enregistre les données dans objet product
 
     let doublon = false; // considérons que ce n'est pas un doublon
@@ -78,7 +82,9 @@ addCart.addEventListener(("click"), function (){ // écoute du bouton addcart (p
                 id,
                 color,
                 quantity,
-                price
+                price,
+                name,
+                imageURL
             };  
             produitStocke.push(newProduct);
             window.alert("Nouveau produit ajouté au panier");
