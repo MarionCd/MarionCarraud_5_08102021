@@ -53,10 +53,6 @@ if(!localStorage.getItem("product")) {
                         divSettingsQty.appendChild(settingQty);
                         settingQty.innerHTML = "Qté :";
 
-                        // let qtyValue = `${panier[i].quantity}`;
-                        // let nb = parseInt(qtyValue);
-
-
                         const inputQty = document.createElement('input');
                         divSettingsQty.appendChild(inputQty);
                         inputQty.setAttribute('type', "number");
@@ -75,31 +71,29 @@ if(!localStorage.getItem("product")) {
                         divSettingsDelete.appendChild(deleteItem);
                         deleteItem.classList.add("deleteItem");
                         deleteItem.innerHTML = "Supprimer";
-        
-      
+          
      };
   };
 
+let articles = document.querySelectorAll('.cart__item');
 
-  let articles = document.querySelectorAll('.cart__item');
+let article = document.getElementsByClassName("cart__item")
 
-  let article = document.getElementsByClassName("cart__item")
+let suppr = document.getElementsByClassName("deleteItem");
 
-  let suppr = document.getElementsByClassName("deleteItem");
-  
-  let qty = document.querySelectorAll('.itemQuantity');
-  
-  for (let i = 0 ; i < articles.length; i ++){
+let qty = document.querySelectorAll('.itemQuantity');
+
+for (let i = 0 ; i < articles.length; i ++){
       
-      qty[i].addEventListener("change",function(){ 
+    qty[i].addEventListener("change",function(){ 
         // le changement de quantité par l'utilisateur met à jour la quantité 
         // dans le localstorage
 
-          let newQty = qty[i].value; // valeur saisie par l'utilisateur
-          panier[i].quantity = newQty // modif de la valeur de quantité du panier par celle saisie
-          localStorage.setItem("product", JSON.stringify(panier)); // MAJ du localstorage
+        let newQty = qty[i].value; // valeur saisie par l'utilisateur
+        panier[i].quantity = newQty // modif de la valeur de quantité du panier par celle saisie
+        localStorage.setItem("product", JSON.stringify(panier)); // MAJ du localstorage
           
-      });
+    });
     
     suppr[i].addEventListener("click", function(){
 
@@ -110,5 +104,4 @@ if(!localStorage.getItem("product")) {
         window.alert("Le produit a bien été supprimé. Le panier va être mis à jour."); // avertissement utilisateur
         location.reload(); // recharger page
     });
-      
 };
