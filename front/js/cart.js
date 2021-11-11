@@ -6,6 +6,9 @@ let section = document.getElementById("cart__items");
 
 let panier = JSON.parse(localStorage.getItem("product"));
 
+let totalQty = [];
+let totalPrix = [];
+
 if(!localStorage.getItem("product")) {
     emptyCart()
   } else {
@@ -40,6 +43,7 @@ if(!localStorage.getItem("product")) {
                     const price = document.createElement('p');
                     divContentPrice.appendChild(price);
                     price.innerHTML = `${panier[i].price}` + ",00 €"
+                    let priceValue = parseInt(price.innerHTML); // transforme le prix HTML en nombre
     
                 const divSettings = document.createElement('div');
                 divContent.appendChild(divSettings);
@@ -62,6 +66,7 @@ if(!localStorage.getItem("product")) {
                         inputQty.setAttribute('value', `${panier[i].quantity}`);
                         inputQty.value = `${panier[i].quantity}` ;
                         inputQty.classList.add("itemQuantity");
+                        let qtyValue = parseInt(inputQty.value); // transforme la valeur de quantité en nombre
     
                     const divSettingsDelete = document.createElement('div');
                     divSettings.appendChild(divSettingsDelete);
@@ -71,13 +76,26 @@ if(!localStorage.getItem("product")) {
                         divSettingsDelete.appendChild(deleteItem);
                         deleteItem.classList.add("deleteItem");
                         deleteItem.innerHTML = "Supprimer";
-          
+        
+    
+        let prixSelonQty = qtyValue * priceValue;
+        price.innerHTML = prixSelonQty + " € "
+
+        const totalQuantity = document.getElementById('totalQuantity');
+        totalQty.push(qtyValue);
+        const reducer = (acc, cur) => acc + cur;
+        totalQuantity.innerHTML = totalQty.reduce(reducer);
+
+        const totalPrice = document.getElementById('totalPrice');
+        totalPrix.push(prixSelonQty);
+        totalPrice.innerHTML = totalPrix.reduce(reducer);
+
      };
   };
 
 let articles = document.querySelectorAll('.cart__item');
 
-let article = document.getElementsByClassName("cart__item")
+//let article = document.getElementsByClassName("cart__item")
 
 let suppr = document.getElementsByClassName("deleteItem");
 
@@ -92,6 +110,7 @@ for (let i = 0 ; i < articles.length; i ++){
         let newQty = qty[i].value; // valeur saisie par l'utilisateur
         panier[i].quantity = newQty // modif de la valeur de quantité du panier par celle saisie
         localStorage.setItem("product", JSON.stringify(panier)); // MAJ du localstorage
+        location.reload(); // recharger page
           
     });
     
@@ -105,3 +124,5 @@ for (let i = 0 ; i < articles.length; i ++){
         location.reload(); // recharger page
     });
 };
+
+
