@@ -201,11 +201,8 @@ btnCommander.addEventListener('click', function(e){
         } else{
             errorEmail.innerHTML = "";
         };
-        // if(prenomRegex && nomRegex && adresse.value != "" && villeRegex && emailRegex){
-        //     console.log("cool");
-        // }
-
     };
+    // création d'un objet "contact" pour les coordonnées du client
     if(prenomRegex && nomRegex && adresseValue != "" && villeRegex && emailRegex){
         let contact = {
             prenomValue,
@@ -218,19 +215,3 @@ btnCommander.addEventListener('click', function(e){
     }
 
 });
-
-
-/*
-    Objectif : 
-        la possibilité, sur la page Panier, de saisir vos coordonnées puis de
-        confirmer votre commande
-
-    Recommandations : 
-        Récupérer et analyser les données saisies par l’utilisateur dans le
-        formulaire.
-        Afficher un message d’erreur si besoin (par exemple lorsqu’un
-        utilisateur renseigne “bonjour” dans le champ “e-mail”).
-        Constituer un objet contact (à partir des données du formulaire) et
-        un tableau de produits.
-
-*/
