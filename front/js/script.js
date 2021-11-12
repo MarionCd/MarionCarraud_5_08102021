@@ -1,5 +1,6 @@
-let listeProduits = document.getElementById("items");
+/************************** RECUP PRODUITS API JSON **********************/
 
+let listeProduits = document.getElementById("items");
 
 fetch("http://localhost:3000/api/products") //requête de l'API pour demander l'ensemble des produits.
     .then(reponse => reponse.json()) // promesse d'un objet js

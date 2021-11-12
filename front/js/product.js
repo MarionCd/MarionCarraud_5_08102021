@@ -1,3 +1,5 @@
+/************************** AFFICHAGE DU CONTENU SELON PRODUIT SELECTIONNE **********************/
+
 const requeteId = window.location.search; //récupère l'url en cours de la fenêtre
 
 const recupId = new URLSearchParams (requeteId); // extrait l'id dans la requete url
@@ -33,6 +35,8 @@ fetch('http://localhost:3000/api/products/' + id) //requête de l'API avec spéc
         console.log("pb dans récupération API")
         alert("impossible d'afficher les produits")
     });
+
+/************************** AJOUT PRODUIT(S) AU LOCALSTORAGE **********************/
 
 let addCart = document.getElementById("addToCart");
 

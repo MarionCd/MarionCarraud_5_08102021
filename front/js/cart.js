@@ -1,3 +1,5 @@
+/************************** AFFICHAGE DU CONTENU DU LOCALSTORAGE DANS LA PAGE PANIER **********************/
+
 function emptyCart(){ 
     window.alert("il n'y a rien dans le panier pour le moment :(")
 };
@@ -48,6 +50,14 @@ if(!localStorage.getItem("product")) {
                 const divSettings = document.createElement('div');
                 divContent.appendChild(divSettings);
                 divSettings.classList.add('cart__item__content__settings');
+                    
+                    const divSettingsColor = document.createElement('div');
+                    divSettings.appendChild(divSettingsColor);
+                    divSettingsColor.classList.add('cart__item__content__settings__color');
+
+                        const settingColor = document.createElement('p');
+                        divSettingsColor.appendChild(settingColor);
+                        settingColor.innerHTML = "Couleur : " + `${panier[i].color}` ;
     
                     const divSettingsQty = document.createElement('div');
                     divSettings.appendChild(divSettingsQty);
@@ -93,9 +103,9 @@ if(!localStorage.getItem("product")) {
      };
   };
 
-let articles = document.querySelectorAll('.cart__item');
+/**************** INTERACTIVITE QUAND L'UTILISATEUR MODIFIE LA QUANTITE OU SUPPRIME UN PRODUIT **********************/
 
-//let article = document.getElementsByClassName("cart__item")
+let articles = document.querySelectorAll('.cart__item');
 
 let suppr = document.getElementsByClassName("deleteItem");
 
@@ -125,4 +135,102 @@ for (let i = 0 ; i < articles.length; i ++){
     });
 };
 
+/************************** VALIDATION DES DONNEES DU FORMULAIRE **********************/
+//envoi du formulaire
+let btnCommander = document.getElementById('order');
 
+btnCommander.addEventListener('click', function(e){
+    let form = document.getElementsByTagName('form')[0].elements;
+
+    let regexSimple = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
+    let regexEmail = /^(([^<>()\[\]\.,;:\s@"]+(\.[^<>()\[\]\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    //prénom
+    let prenom = document.getElementById('firstName');
+    let prenomValue = prenom.value;
+    let errorPrenom = document.getElementById('firstNameErrorMsg');
+    let prenomRegex = regexSimple.test(prenomValue);
+
+    //nom
+    let nom = document.getElementById('lastName');
+    let nomValue = nom.value;
+    let errorNom = document.getElementById('lastNameErrorMsg');
+    let nomRegex =  regexSimple.test(nomValue);
+
+    //adresse
+    let adresse = document.getElementById('address');
+    let adresseValue = adresse.value;
+    let errorAdresse = document.getElementById('addressErrorMsg');
+
+    //ville
+    let ville = document.getElementById('city');
+    let villeValue = ville.value;
+    let errorVille = document.getElementById('cityErrorMsg');
+    let villeRegex = regexSimple.test(villeValue);
+
+    //email
+    let email = document.getElementById('email');
+    let emailValue = email.value;
+    let errorEmail = document.getElementById('emailErrorMsg');
+    let emailRegex = regexEmail.test(emailValue);
+
+    for (let i = 0 ; i < form.length ; i ++){
+        if(!prenomRegex){
+            errorPrenom.innerHTML = "Veuillez saisir votre prénom";
+        } else{
+            errorPrenom.innerHTML = "";
+        };
+        if(!nomRegex){
+            errorNom.innerHTML = "Veuillez saisir votre nom";
+        } else{
+            errorNom.innerHTML = "";
+        };
+        if(!villeRegex){
+            errorVille.innerHTML = "Veuillez saisir votre ville";
+        } else{
+            errorVille.innerHTML = "";
+        };
+
+        if(adresse.value === ""){
+            errorAdresse.innerHTML = "Veuillez saisir votre adresse";
+        } else{
+            errorAdresse.innerHTML = "";
+        };
+        if(!emailRegex){
+            errorEmail.innerHTML = "Veuillez saisir une adresse mail valide";
+        } else{
+            errorEmail.innerHTML = "";
+        };
+        // if(prenomRegex && nomRegex && adresse.value != "" && villeRegex && emailRegex){
+        //     console.log("cool");
+        // }
+
+    };
+    if(prenomRegex && nomRegex && adresseValue != "" && villeRegex && emailRegex){
+        let contact = {
+            prenomValue,
+            nomValue,
+            adresseValue,
+            villeValue,
+            emailValue
+        }
+    localStorage.setItem("commande", JSON.stringify(contact));
+    }
+
+});
+
+
+/*
+    Objectif : 
+        la possibilité, sur la page Panier, de saisir vos coordonnées puis de
+        confirmer votre commande
+
+    Recommandations : 
+        Récupérer et analyser les données saisies par l’utilisateur dans le
+        formulaire.
+        Afficher un message d’erreur si besoin (par exemple lorsqu’un
+        utilisateur renseigne “bonjour” dans le champ “e-mail”).
+        Constituer un objet contact (à partir des données du formulaire) et
+        un tableau de produits.
+
+*/
