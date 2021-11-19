@@ -229,4 +229,64 @@ btnCommander.addEventListener('click', function(e){
     localStorage.setItem("commande", JSON.stringify(contact));
     }
 
+    let orderId = [];
+
+    for (let i = 0 ; i < articles.length ; i++){
+        orderId.push(panier[i].id);
+    }
+
+    /************************** ENVOI DONNEES FORMULAIRE ET PANIER AU SERVEUR **********************/
+
+    //objet de contact : 
+    let objetContact = localStorage.getItem("commande");  
+
+    let contact = JSON.stringify(objetContact);
+
+    let products = JSON.stringify(panier);
+
+    let commande = {
+        contact,
+        products,
+        orderId
+    };
+
+    console.log(commande);
+
+    const promesseCommande = fetch("http://localhost:3000/api/products/order", {
+        method: "POST",
+        headers: { 
+            'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify(commande),        
+    })
+    .then(reponse => reponse.json())
+    .then(reponse => {
+        console.log(reponse);
+    })
+
+    //   localStorage.clear();
+    //   let confirmationUrl = "./confirmation.html?id=" + data.orderId;
+    //   window.location.href = confirmationUrl;
+    
+    .catch(() => {
+      alert("Erreur fetch");
+    }); 
+
+    
 });
+
+
+
+
+
+/*
+Recommandations :
+    Effectuer une requête POST sur l’API et récupérer l’identifiant de
+    commande dans la réponse de celle-ci.
+    Rediriger l’utilisateur sur la page Confirmation, en passant l’id de
+    commande dans l’URL, dans le but d’afficher le numéro de
+    commande.
+    Si ce numéro doit être affiché, celui-ci ne doit pas être cnodeonservé /
+    stocké.
+
+*/
