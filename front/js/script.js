@@ -25,10 +25,7 @@ fetch("http://localhost:3000/api/products") //requête de l'API pour demander l'
 
             const paragraphe = document.createElement('p');
             article.appendChild(paragraphe);
-            paragraphe.textContent = `${produit.description}`;
-
-           
-            
+            paragraphe.textContent = `${produit.description}`;   
         }
     })
     
@@ -36,7 +33,3 @@ fetch("http://localhost:3000/api/products") //requête de l'API pour demander l'
         console.log("pb dans récupération API")
         alert("impossible d'afficher les produits")
     });
-
-
-
-  
